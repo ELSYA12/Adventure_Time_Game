@@ -82,6 +82,9 @@ sfx_lose.set_volume(1.0)
 
 # Channel khas untuk bunyi sungai (loop)
 river_channel = pygame.mixer.Channel(1)
+# Channel khas untuk bunyi menang & kalah
+win_channel = pygame.mixer.Channel(2)
+lose_channel = pygame.mixer.Channel(3)
 
 # ── Muat & Main BGM ───────────────────────────────────────────────────────────
 bgm_loaded = load_audio_music("background.mp3")
@@ -407,16 +410,15 @@ class GameManager:
                 self.message = msg
                 river_channel.stop()
                 pygame.mixer.music.stop()
-                sfx_lose.play()
+                lose_channel.play(sfx_lose)
                 return
             if all(c.side == "right" for c in self.characters):
                 self.state   = "win"
                 self.score   = max(0, int(self.timer)*10 - self.moves*5)
                 self.message = f"OOO IS SAVED! SCORE: {self.score}"
                 river_channel.stop()
-                pygame.mixer.music.stop(1000)
-                sfx_win.play()
-                
+                pygame.mixer.music.stop()
+                win_channel.play(sfx_win)
  
         for c in self.characters:
             if not c.on_boat:
